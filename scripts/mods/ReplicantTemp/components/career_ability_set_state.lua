@@ -219,7 +219,7 @@ mod:hook_origin(CareerAbilityWEShade, "_run_ability", function (self)
 		-- career_extension:set_state("kerillian_activate_shade")
 		--edit end--
 
-		MOOD_BLACKBOARD.skill_shade = true
+	--	MOOD_BLACKBOARD.skill_shade = true
 	end
 
 	--edit start--
@@ -282,7 +282,8 @@ mod:hook_origin(BuffFunctionTemplates.functions, "on_shade_activated_ability_rem
 	first_person_extension:play_remote_hud_sound_event("Stop_career_ability_kerillian_shade_loop_husk")
 
 	if not is_bot(unit) then
-		MOOD_BLACKBOARD[stealth_identifier] = false
+	--	MOOD_BLACKBOARD[stealth_identifier] = false
+		Managers.state.camera:set_mood("skill_shade", buff, true)
 	end
 
 	--edit start--
@@ -390,7 +391,8 @@ mod:hook_origin(CareerAbilityWHZealot, "_run_ability", function (self)
 			first_person_extension:play_hud_sound_event("Play_career_ability_zealot_charge")
 			first_person_extension:play_remote_unit_sound_event("Play_career_ability_zealot_charge", owner_unit, 0)
 			
-			MOOD_BLACKBOARD.skill_zealot = true
+		--	MOOD_BLACKBOARD.skill_zealot = true
+			Managers.state.camera:set_mood("skill_zealot", "skill_zealot", true)
 		end
 		
 		career_extension:set_state("victor_activate_zealot")
@@ -495,7 +497,8 @@ mod:hook_origin(CareerAbilityDRSlayer, "_do_common_stuff", function (self)
 		first_person_extension:play_hud_sound_event("Play_career_ability_bardin_slayer_loop")
 
 		if local_player then
-			MOOD_BLACKBOARD.skill_slayer = true
+		--	MOOD_BLACKBOARD.skill_slayer = true
+			Managers.state.camera:set_mood("skill_slayer", "skill_slayer", true)
 		end
 		
 		career_extension:set_state("bardin_activate_slayer")
@@ -657,8 +660,8 @@ mod:hook_origin(CareerAbilityESHuntsman, "_run_ability", function (self, skip_co
 		first_person_extension:play_hud_sound_event("Play_career_ability_markus_huntsman_loop")
 		first_person_extension:animation_event("shade_stealth_ability")
 
-		MOOD_BLACKBOARD.skill_huntsman_surge = false
-		MOOD_BLACKBOARD.skill_huntsman_stealth = true
+		Managers.state.camera:set_mood("skill_huntsman_surge", "skill_huntsman_surge", false)
+		Managers.state.camera:set_mood("skill_huntsman_stealth", "skill_huntsman_stealth", true)
 	end
 	
 	if local_player or (is_server and bot_player) then
