@@ -1,0 +1,11 @@
+mod = [
+	"ReplicantTemp"
+]
+
+package = [
+	"resource_packages/ReplicantTemp/ReplicantTemp"
+]
+
+lua = [
+	"scripts/mods/ReplicantTemp/*"
+]
