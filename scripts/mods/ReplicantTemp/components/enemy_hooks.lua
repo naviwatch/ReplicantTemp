@@ -243,7 +243,7 @@ mod:hook_origin(ProjectileSystem, "spawn_globadier_globe", function (self, posit
 	end
 end)
 
-mod:hook(AreaDamageExtension, "start", function (func, self)
+mod:hook(AreaDamageExtension, "start_area_damage", function (func, self)
 	func(self)
 	
 	if self.unit and mod.bot_poison_wind_prediction_ids[self.unit] then

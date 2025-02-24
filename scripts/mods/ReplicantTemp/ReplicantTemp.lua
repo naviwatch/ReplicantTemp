@@ -92,7 +92,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2577718836
 
 
 
-mod.DEBUG = true
+mod.DEBUG = false
 
 mod:dofile("scripts/mods/"..mod_name.."/components/bt_parallel_node")				--_bt_parallel_node
 
