@@ -215,11 +215,7 @@ mod:hook_origin(CareerAbilityWEShade, "_run_ability", function (self)
 		end
 
 		first_person_extension:animation_event("shade_stealth_ability")
-		--edit start--
-		-- career_extension:set_state("kerillian_activate_shade")
-		--edit end--
-
-	--	MOOD_BLACKBOARD.skill_shade = true
+		career_extension:set_state("kerillian_activate_shade")
 	end
 
 	--edit start--
@@ -262,11 +258,10 @@ mod:hook_origin(BuffFunctionTemplates.functions, "on_shade_activated_ability_rem
 	end
 
 	local buff_template = buff.template
-	local stealth_identifier = buff_template.stealth_identifier
 	local status_extension = ScriptUnit.extension(unit, "status_system")
 
-	status_extension:set_invisible(false, nil, stealth_identifier)
-	status_extension:set_noclip(false, stealth_identifier)
+	status_extension:set_invisible(false, nil, buff)
+	status_extension:set_noclip(false, buff)
 
 	local talent_extension = ScriptUnit.has_extension(unit, "talent_system")
 	local buff_extension = ScriptUnit.has_extension(unit, "buff_system")
@@ -283,16 +278,14 @@ mod:hook_origin(BuffFunctionTemplates.functions, "on_shade_activated_ability_rem
 
 	if not is_bot(unit) then
 	--	MOOD_BLACKBOARD[stealth_identifier] = false
-		Managers.state.camera:set_mood("skill_shade", buff, true)
+		Managers.state.camera:set_mood("skill_shade", buff, false)
 	end
 
 	--edit start--
 	-- local career_extension = ScriptUnit.extension(unit, "career_system")
 
 	-- career_extension:set_state("default")
-	
-	local did_restealth = (buff_template.can_restealth_combo and talent_extension:has_talent("kerillian_shade_activated_stealth_combo")) or
-							(buff_template.can_restealth_on_remove and talent_extension:has_talent("kerillian_shade_activated_ability_restealth"))
+	local did_restealth = (buff_template.can_restealth_combo and talent_extension:has_talent("kerillian_shade_activated_stealth_combo")) or (buff_template.can_restealth_on_remove and talent_extension:has_talent("kerillian_shade_activated_ability_restealth"))
 	
 	if not is_bot(unit) or not did_restealth then
 		local career_extension = ScriptUnit.extension(unit, "career_system")
@@ -300,7 +293,7 @@ mod:hook_origin(BuffFunctionTemplates.functions, "on_shade_activated_ability_rem
 		career_extension:set_state("default")
 	end
 	--edit end--
-	
+
 	status_extension:set_is_dodging(false)
 
 	if buff_template.can_restealth_combo and talent_extension:has_talent("kerillian_shade_activated_stealth_combo") then
