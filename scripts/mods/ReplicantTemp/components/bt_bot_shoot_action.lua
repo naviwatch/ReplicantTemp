@@ -751,7 +751,7 @@ mod:hook(BTBotShootAction, "_should_charge", function (func, self, shoot_blackbo
 
 	local target_breed = shoot_blackboard.target_breed
 
-	if target_breed then
+	if target_breed then 
 		local target_breed_category_mask = target_breed.category_mask
 		local normal_shot_util = bit.band(target_breed_category_mask, shoot_blackboard.effective_against)
 		local charge_shot_util = bit.band(target_breed_category_mask, shoot_blackboard.effective_against_charged)
@@ -806,8 +806,8 @@ BTBotShootAction._update_target  = function(self, blackboard, shoot_bb, t)
 	local bb_target = blackboard.target_unit
 	local shoot_bb_target = shoot_bb.target_unit
 
-	local bb_target_valid = bb_target and Unit.alive(bb_target)
-	local shoot_bb_target_valid = shoot_bb_target and Unit.alive(shoot_bb_target)
+	local bb_target_valid = bb_target and mod.is_unit_alive(bb_target)
+	local shoot_bb_target_valid = shoot_bb_target and mod.is_unit_alive(shoot_bb_target)
 
 	if not shoot_bb.disable_target_change and bb_target and bb_target_valid and bb_target ~= shoot_bb_target then
 		self:_set_new_aim_target(shoot_bb, bb_target, t)

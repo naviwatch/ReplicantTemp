@@ -35,7 +35,7 @@ mod:hook(BTBotActivateAbilityAction, "enter", function (func, self, unit, blackb
 	
 	---------------------------------------------------------
 	
-	activate_ability_data.post_effects = ability_action_data.post_effects
+--	activate_ability_data.post_effects = ability_action_data.post_effects
 end)
 
 mod:hook(BTBotActivateAbilityAction, "leave", function (func, self, unit, blackboard, t, reason, destroy)
@@ -46,12 +46,13 @@ mod:hook(BTBotActivateAbilityAction, "leave", function (func, self, unit, blackb
 		
 		input_extension:set_aiming(false)
 	end
-	
+	--[[
 	if activate_ability_data.post_effects then
 		blackboard.ability_post_effects = table.clone(activate_ability_data.post_effects)
 		
 		activate_ability_data.post_effects = nil
 	end
+	]]
 	
 	activate_ability_data.is_using_ability = false
 	

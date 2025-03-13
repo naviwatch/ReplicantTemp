@@ -115,29 +115,30 @@ mod.bot_poison_wind_prediction_ids = {}
 mod:hook_origin(ProjectileSystem, "spawn_globadier_globe", function (self, position, target_vector, angle, speed, initial_radius, radius, duration, owner_unit, damage_source, aoe_dot_damage, aoe_init_damage, aoe_dot_damage_interval, create_nav_tag_volume, instant_explosion, fixed_impact_data)
 	if self.is_server then
 		local nav_tag_volume_layer = create_nav_tag_volume and "bot_poison_wind" or nil
-		-- local is_versus = Managers.mechanism:current_mechanism_name() == "versus"
+		local is_versus = Managers.mechanism:current_mechanism_name() == "versus"
 
 		if instant_explosion then
 			local extension_init_data = {
 				area_damage_system = {
-					area_damage_template = "globadier_area_dot_damage",
-					invisible_unit = true,
-					player_screen_effect_name = "fx/screenspace_poison_globe_impact",
 					area_ai_random_death_template = "area_poison_ai_random_death",
+					damage_players = true,
 					dot_effect_name = "fx/wpnfx_poison_wind_globe_impact",
 					extra_dot_effect_name = "fx/chr_gutter_death",
-					damage_players = true,
+					invisible_unit = true,
+					player_screen_effect_name = "fx/screenspace_poison_globe_impact",
 					aoe_dot_damage = aoe_dot_damage,
 					aoe_init_damage = aoe_init_damage,
 					aoe_dot_damage_interval = aoe_dot_damage_interval,
 					radius = radius,
 					initial_radius = initial_radius,
 					life_time = duration,
+					area_damage_template = is_versus and "globadier_area_dot_damage_vs" or "globadier_area_dot_damage",
 					damage_source = damage_source,
 					create_nav_tag_volume = create_nav_tag_volume,
 					nav_tag_volume_layer = nav_tag_volume_layer,
-					source_attacker_unit = owner_unit
-				}
+					source_attacker_unit = owner_unit,
+					threat_duration = duration,
+				},
 			}
 			local aoe_unit_name = "units/weapons/projectile/poison_wind_globe/poison_wind_globe"
 			local aoe_unit = Managers.state.unit_spawner:spawn_network_unit(aoe_unit_name, "aoe_unit", extension_init_data, position)
@@ -152,33 +153,33 @@ mod:hook_origin(ProjectileSystem, "spawn_globadier_globe", function (self, posit
 					angle = angle,
 					speed = speed,
 					target_vector = target_vector,
-					initial_position = position
+					initial_position = position,
 				},
 				projectile_system = {
 					damage_source = damage_source,
-					impact_template_name = "explosion_impact", --is_versus and "vs_globadier_impact" or "explosion_impact",
-					owner_unit = owner_unit
+					impact_template_name = is_versus and "vs_globadier_impact" or "explosion_impact",
+					owner_unit = owner_unit,
 				},
 				area_damage_system = {
-					area_damage_template = "globadier_area_dot_damage",
-					invisible_unit = false,
-					threat_duration = 0.5,
-					player_screen_effect_name = "fx/screenspace_poison_globe_impact",
 					area_ai_random_death_template = "area_poison_ai_random_death",
-					dot_effect_name = "fx/wpnfx_poison_wind_globe_impact",
 					damage_players = true,
+					invisible_unit = false,
+					player_screen_effect_name = "fx/screenspace_poison_globe_impact",
 					aoe_dot_damage = aoe_dot_damage,
 					aoe_init_damage = aoe_init_damage,
 					aoe_dot_damage_interval = aoe_dot_damage_interval,
 					radius = radius,
 					initial_radius = initial_radius,
 					life_time = duration,
+					dot_effect_name = is_versus and "fx/wpnfx_poison_wind_globe_impact_vs" or "fx/wpnfx_poison_wind_globe_impact",
+					area_damage_template = is_versus and "globadier_area_dot_damage_vs" or "globadier_area_dot_damage",
 					damage_source = damage_source,
 					create_nav_tag_volume = create_nav_tag_volume,
 					nav_tag_volume_layer = nav_tag_volume_layer,
 					source_attacker_unit = owner_unit,
-					owner_player = Managers.player:owner(owner_unit)
-				}
+					owner_player = Managers.player:owner(owner_unit),
+					threat_duration = duration,
+				},
 			}
 			local unit_template = nil
 

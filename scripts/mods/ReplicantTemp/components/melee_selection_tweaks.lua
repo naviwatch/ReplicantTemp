@@ -124,7 +124,7 @@ local function BetterMelee_My(self, blackboard, target_unit, career_name)
 	if not target_breed or not Unit.alive(target_unit) then
 		return best_attack_input, best_attack_meta_data
 	end
-	
+
 	local self_unit = blackboard.unit
 	local self_position = POSITION_LOOKUP[self_unit]
 	local first_person_extension = blackboard.first_person_extension
@@ -297,6 +297,13 @@ local function BetterMelee_My(self, blackboard, target_unit, career_name)
 		if attack_input == "hold_attack" and is_wh_with_rapier and (target_specific == BOSS or target_is_superarmoured or target_breed.name == "skaven_pack_master") then
 			utility = utility + 100
 		end
+
+		-- Firesword
+		--[[
+		if attack_input == "hold_attack" and item_data.item_type == "bw_flame_sword" then
+			utility = utility + 100
+		end
+		]]
 
 		if best_utility < utility then
 			best_utility = utility

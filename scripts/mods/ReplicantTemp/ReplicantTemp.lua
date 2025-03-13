@@ -2264,7 +2264,7 @@ mod:hook_origin(BTBotMeleeAction, "_update_engage_position", function(self, unit
 			-- has been updated as needed, resolve the actual engage position of this iteration
 			engage_position = get_engage_pos(nav_world, target_unit_position, engage_from, melee_distance)
 			--
-		elseif self:_is_attacking_me(unit, target_unit) and targeting_boss and Vector3.length(enemy_offset) < melee_distance+1 then
+		elseif mod._is_attacking_me(unit, target_unit) and targeting_boss and Vector3.length(enemy_offset) < melee_distance+1 then
 			-- make the bot targeted by an ogre to back off when the ogre attacks
 			engage_position = self_position - (2 * Vector3.normalize(enemy_offset))
 		elseif math.abs(Vector3.length(enemy_offset) - melee_distance) < 0.2 then
@@ -3164,6 +3164,25 @@ local AGGRESSIVE_MELEE_ALLOWANCE = {
 	},
 }
 
+mod._is_attacking_me = function(self, self_unit, enemy_unit)
+	local bb = BLACKBOARDS[enemy_unit]
+
+	if not bb then
+		return false
+	end
+
+	local enemy_buff_extension = ScriptUnit.has_extension(enemy_unit, "buff_system")
+
+	if enemy_buff_extension and enemy_buff_extension:has_buff_perk("ai_unblockable") then
+		return false
+	end
+
+	local action = bb.action
+	local unblockable = action and action.unblockable
+
+	return not unblockable and bb.attacking_target == self_unit and not bb.past_damage_in_attack
+end
+
 mod:hook_origin(BTBotMeleeAction, "_defend", function(self, unit, blackboard, target_unit, input_ext, t, in_melee_range)
 	local defense_meta_data = blackboard.wielded_item_template.defense_meta_data or DEFAULT_DEFENSE_META_DATA
 	local push_type = defense_meta_data.push
@@ -3288,7 +3307,7 @@ mod:hook_origin(BTBotMeleeAction, "_defend", function(self, unit, blackboard, ta
 		
 		if loop_bb then
 			if mod.TRASH_UNITS_AND_SHIELD_SV[loop_breed.name] then	--single target attack, staggerable
-				if self:_is_attacking_me(self_unit, loop_unit) then
+				if mod._is_attacking_me(self_unit, loop_unit) then
 					if loop_bb.moving_attack then		--running attack
 						if not awareness.attacks[loop_unit] then
 							awareness.attacks[loop_unit] = current_time
@@ -3352,8 +3371,8 @@ mod:hook_origin(BTBotMeleeAction, "_defend", function(self, unit, blackboard, ta
 					--mod:echo(can_stagger)
 				end
 				
-				-- if self:_is_attacking_me(self_unit, loop_unit) then
-				if self:_is_attacking_me(self_unit, loop_unit) and loop_distance < 5 then	--7
+				-- if mod._is_attacking_me(self_unit, loop_unit) then
+				if mod._is_attacking_me(self_unit, loop_unit) and loop_distance < 5 then	--7
 					if loop_bb.moving_attack then
 						defense_data.threat.running_attack = true
 					end

@@ -584,7 +584,7 @@ mod:hook(PlayerBotBase, "_update_target_enemy", function(func, self, dt, t)
 	local STICKYNESS_DISTANCE_MODIFIER = -0.05
 	
 	-- if bb.shoot and bb.shoot.charging_shot then
-		-- STICKYNESS_DISTANCE_MODIFIER = -3	--2
+		-- STICKYNESS_DISTANCE_MODIFIER = -3	
 	-- end
 	
 	local prox_enemy_dist = bb.proximity_target_distance + ((prox_enemy == old_target and STICKYNESS_DISTANCE_MODIFIER) or 0)
@@ -616,18 +616,16 @@ mod:hook(PlayerBotBase, "_update_target_enemy", function(func, self, dt, t)
 	local sniper_target_selection 	= mod.sniper_selection_ranged[ranged_slot_name]
 	
 	local enhanced_target_choice = blackboard.enhanced_target_choice
-	local boss_priority = enhanced_target_choice
+	local boss_priority = mod:get("focus_bosses") or enhanced_target_choice
 	local elite_priority = enhanced_target_choice
 	
 	local further_logic = false
 	
-	-- if boss_priority and urgent_is_boss and urgent_enemy_dist < 10 then
-		-- bb.target_unit = urgent_enemy
-	-- elseif priority_enemy and prio_enemy_dist < 10 then		--4.5	--5		--3
-		-- bb.target_unit = priority_enemy
-	if priority_enemy and prio_enemy_dist < 10 then		--4.5	--5		--3
+	if boss_priority and urgent_is_boss and urgent_enemy_dist < 20 then -- old 10 
+		bb.target_unit = urgent_enemy
+	elseif priority_enemy and prio_enemy_dist < 10 then		--4.5	--5		--3
 		bb.target_unit = priority_enemy
-	elseif boss_priority and urgent_is_boss and urgent_enemy_dist < 10 then
+	elseif urgent_is_boss and urgent_enemy_dist < 10 then -- extra logic check for when laser boss is off
 		bb.target_unit = urgent_enemy
 	elseif bb.closest_swarm_projectile_unit and bb.closest_swarm_projectile_dist < 4 then
 		bb.target_unit = bb.closest_swarm_projectile_unit

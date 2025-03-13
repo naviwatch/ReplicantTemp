@@ -490,9 +490,9 @@ return {
 				default_value = true
 			},
 			{
-				setting_id = "ignore_bosses",
+				setting_id = "focus_bosses",
 				type = "checkbox",
-				tooltip = "ignore_bosses_description",
+				tooltip = "focus_bosses_description",
 				default_value = true
 			},
 			-- {

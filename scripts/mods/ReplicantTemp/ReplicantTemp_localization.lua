@@ -314,12 +314,12 @@
 	
 	-------------------------------------------------------------------------------------------------------
 	
-	ignore_bosses = {
-		en = "Bots No Longer Focus on Bosses",
+	focus_bosses = {
+		en = "Bots Now Focus Bosses",
 		ru = "Отключение Фокусировки На Боссах"
 	},
-	ignore_bosses_description = {
-		en = "Bots will ignore bosses entirely unless attacked by them, or no other enemies are nearby.",
+	focus_bosses_description = {
+		en = "Bots will now only target bosses, ignoring all nearby enemies.",
 		ru = "Позволяет ботам не обращать внимания на боссов, если есть другие противники, до тех пор пока босс не атакует их."
 	},
 	
